@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pexels API Example</title>
+</head>
+<body>
+    <h1> Section for user photo search</h1>
+    <label for="searchInput">Search:</label>
+    <input type="text" id="searchInput" placeholder="Enter search term">
+    <button id="searchButton">Search</button>
+
+    <div id="photo-search"></div>
+    <hr>
+
+    <h1>Pexels API Example</h1>
+
+    <div id="photo-container"></div>
+
+    <script>
+
+        //function to fetch random photos from pexels
+        document.addEventListener('DOMContentLoaded', function () {
+            const apiKey = 'o5Ck3cUb2KGWhBS6JGemEySVYjdWsquLK0NtrFvGD1YdyxagNM1bBD1G';
+            const endpoint = 'https://api.pexels.com/v1/curated';
+
+            // Make a request to the Pexels API
+            fetch(endpoint, {
+                headers: {
+                    'Authorization': apiKey,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Process the response and display photos
+                const photoContainer = document.getElementById('photo-container');
+
+                data.photos.forEach(photo => {
+                    const img = document.createElement('img');
+                    img.src = photo.src.large;
+                    img.alt = photo.photographer;
+                    img.title = photo.photographer;
+
+                    photoContainer.appendChild(img);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data from Pexels API:', error);
+            });
+        });
+
+
+        // function for user photo search
+        document.addEventListener('DOMContentLoaded', function () {
+            const apiKey = 'o5Ck3cUb2KGWhBS6JGemEySVYjdWsquLK0NtrFvGD1YdyxagNM1bBD1G';
+            const photoContainer = document.getElementById('photo-search');
+
+            function searchPhotos(query) {
+                const endpoint = `https://api.pexels.com/v1/search?query=${query}&per_page=9`;
+
+                fetch(endpoint, {
+                    headers: {
+                        'Authorization': apiKey,
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Clear previous photos
+                    photoContainer.innerHTML = '';
+
+                    // Process the response and display photos
+                    data.photos.forEach(photo => {
+                        const img = document.createElement('img');
+                        img.src = photo.src.large;
+                        img.alt = photo.photographer;
+                        img.title = photo.photographer;
+
+                        photoContainer.appendChild(img);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data from Pexels API:', error);
+                });
+            }
+
+            // Event listener for the search button
+            document.getElementById('searchButton').addEventListener('click', function () {
+                const searchTerm = document.getElementById('searchInput').value;
+                if (searchTerm.trim() !== '') {
+                    searchPhotos(searchTerm);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
