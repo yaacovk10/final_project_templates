@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Speech Example</title>
+</head>
+<body>
+
+    <h1>Text-to-Speech Example</h1>
+
+    <label for="listenInput">Enter Text:</label>
+    <input type="text" id="listenInput" placeholder="Type text to listen">
+
+    <button id="listenButton">Listen</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function speakText(text, lang) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                speechSynthesis.speak(utterance);
+            }
+
+            document.getElementById('listenButton').addEventListener('click', function () {
+                const inputText = document.getElementById('listenInput').value.trim();
+                if (inputText !== '') {
+                    speakText(inputText, 'fr-FR'); // French language
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
